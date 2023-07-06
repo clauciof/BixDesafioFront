@@ -1,39 +1,71 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { Navigate } from "react-router-dom"
 
 class Login extends Component{
+    constructor(props){
+    
+        super(props)
+        this.passwordExpression  = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/ 
+        // Set initial state
+        this.state = {login : null, password: null, submitted: false}
+    
+        // Binding this keyword
+        this.handleLoginChange = this.handleLoginChange.bind(this)
+        this.handlePasswordChange = this.handlePasswordChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleLoginChange(event){
+        this.setState({login: event.target.value})
+        console.log(this.state.login)
+    }
+
+    handlePasswordChange(event){
+        this.setState({password: event.target.value})
+        console.log(this.state.password)
+    }
+
+    handleSubmit(event){
+        event.preventDefault()
+        console.log(this.state)
+        if(this.state.login !==null && this.state.login.length !==0 && this.state.password !==null && this.passwordExpression.test(this.state.password)){
+            this.setState({submitted: true})
+        }
+        
+    }
 
     render(){
         return (
             <div >
-                <h1>Login</h1>
-                <nav>
-                    <ul>
-                        <li>
-                        <Link to="/home">Home</Link>
-                        </li>
-                        <li>
-                        <Link to="/subscribe">Subscribe</Link>
-                        </li>
-                    </ul>
-                </nav>
-        
-                <div class="App-body-login">
+                <div className="Menu">
+                    <nav>
+                        <ul>
+                            <Link to="/home">Home</Link>
+                        </ul>
+                        <ul>
+                            <Link to="/cadastro">Cadastro</Link>
+                        </ul>
+                    </nav>
+                </div>
+               
+                <div className="App-body-login">
+                    <h1>Login</h1>
+                    {  this.state.submitted && (
+                        <Navigate to="/home" replace={true} state={ this.state }/>
+                    )}
                     <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <div className="form-group">
+                            <label >Email address</label>
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="your@email.com" onChange={this.handleLoginChange}/>
+                            
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                        <div className="form-group">
+                            <label >Password</label>
+                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="*****" onChange={this.handlePasswordChange}/>
                         </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary text-light">Submit</button>
+                        
+                        <button type="submit" className="btn btn-primary text-light" onClick={this.handleSubmit}>Submit</button>
                     </form>
                 </div>
                 
