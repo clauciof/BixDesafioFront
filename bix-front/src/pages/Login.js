@@ -1,41 +1,45 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Navigate } from "react-router-dom"
+import { useState } from 'react'
 
-class Login extends Component{
-    constructor(props){
+const Login = () => {
+   
     
-        super(props)
-        this.passwordExpression  = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/ 
-        // Set initial state
-        this.state = {login : null, password: null, submitted: false}
+        
+    const passwordExpression  = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/ 
+    // Set initial state
+    const [state, setState]  = useState({login : null, password: null, submitted: false, staff: false})
     
-        // Binding this keyword
-        this.handleLoginChange = this.handleLoginChange.bind(this)
-        this.handlePasswordChange = this.handlePasswordChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
+    
+    
+
+    function handleLoginChange(event){
+        setState({login : event.target.value, password: state.password, submitted: state.submitted, staff: state.staff})
+        console.log(state.login)
     }
 
-    handleLoginChange(event){
-        this.setState({login: event.target.value})
-        console.log(this.state.login)
+    function handlePasswordChange(event){
+        setState({login : state.login, password: event.target.value, submitted: state.submitted, staff: state.staff})
+        console.log(state.password)
     }
 
-    handlePasswordChange(event){
-        this.setState({password: event.target.value})
-        console.log(this.state.password)
-    }
-
-    handleSubmit(event){
+    function handleSubmit(event){
         event.preventDefault()
-        console.log(this.state)
-        if(this.state.login !==null && this.state.login.length !==0 && this.state.password !==null && this.passwordExpression.test(this.state.password)){
-            this.setState({submitted: true})
+        console.log(state)
+        if(state.login !==null && state.login.length !==0 && state.password !==null && passwordExpression.test(state.password)){
+            if(state.password === "admin1"){
+                console.log("AAA")
+                setState({login : state.login, password: state.password, submitted: true, staff: true})
+                console.log(state.staff)
+            }else{
+                setState({login : state.login, password: state.password, submitted: true, staff: false})
+            }
         }
         
     }
 
-    render(){
+  
         return (
             <div >
                 <div className="Menu">
@@ -51,27 +55,26 @@ class Login extends Component{
                
                 <div className="App-body-login">
                     <h1>Login</h1>
-                    {  this.state.submitted && (
-                        <Navigate to="/home" replace={true} state={ this.state }/>
+                    {  state.submitted && (
+                        <Navigate to="/home" replace={true} state={ state }/>
                     )}
                     <form>
                         <div className="form-group">
                             <label >Email address</label>
-                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="your@email.com" onChange={this.handleLoginChange}/>
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="your@email.com" onChange={(e)=>handleLoginChange(e)}/>
                             
                         </div>
                         <div className="form-group">
                             <label >Password</label>
-                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="*****" onChange={this.handlePasswordChange}/>
+                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="*****" onChange={(e)=>handlePasswordChange(e)}/>
                         </div>
                         
-                        <button type="submit" className="btn btn-primary text-light" onClick={this.handleSubmit}>Submit</button>
+                        <button type="submit" className="btn btn-primary text-light" onClick={(e)=>handleSubmit(e)}>Submit</button>
                     </form>
                 </div>
                 
             </div>
           );
-    }
   
 }
 

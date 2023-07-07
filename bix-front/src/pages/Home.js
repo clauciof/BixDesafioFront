@@ -1,17 +1,70 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { useLocation, Link } from "react-router-dom"
 import userIcon from "../icons/person.svg"
+import adminIcon from "../icons/manage_accounts.svg"
+import deletIcon from "../icons/deleteIcon.png"
+import editIcon from "../icons/editIconGold.png"
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // import { useLocation } from 'react-router-dom'
 
+
+const INITIAL_DATA = [
+    { name: 'Accenture', email: 'accenture@accenture.com', perfil: 'empresa' },
+    { name: 'Claucio', email: 'claucio@gmail.com', perfil: 'funcionario' },
+    { name: 'Bix', email: 'bix@bix.com', perfil: 'empresa' },
+  ]
+  
 const Home = () => {
-    const location = useLocation();
-    let state = {user: location.state.login};
-    console.log(state);
+    const navigate = useNavigate();
+    const location = useLocation()
+    console.log("Location", location.state)
+    var login = location.state?.login || 'null'
+    var staff = location.state?.staff || null
+
+    const [state, setState] = useState({user: login, staff: staff, data: INITIAL_DATA})
+
+    const icon = staff ? adminIcon : userIcon
+
+    console.log("Estado fora", state)
+
+    function handleEditClick(email){
+        navigate('/cadastro', {state: email})
+
+    }
+
+    function handleDeleteClick(email){
+        const newStateData = state.data.filter(data => data.email !== email);
+        console.log("Estado", state)
+        setState({user: state.user, staff: state.staff, data: newStateData})
+        console.log("Estado", state)
+    }
+
+    function renderAdminTable(){
+        return state.data.map(({ name, email, perfil }) => {
+            return <tr key={email} >
+            <td >{name}</td>
+            <td >{email}</td>
+            <td >{perfil}</td>
+            <td><i title="Editar"><img src={editIcon} alt="editar"width="24" height="24" onClick={()=>{handleEditClick(email)}}/></i>/<i title="Excluir"><img src={deletIcon} alt="editar"width="24" height="24" onClick={()=>{handleDeleteClick(email)}}/></i></td>
+          </tr>
+          })
+    }
+
+    function renderTable(){
+        return state.data.map(({ name, email, perfil }) => {
+            return <tr key={email} >
+            <td >{name}</td>
+            <td >{email}</td>
+            <td >{perfil}</td>
+          </tr>
+          })
+    }
     
     return (
         <div>
             <h1>Home</h1>
-            <img src={userIcon} width="50" height="50"/>
+            <img src={icon} alt="icone usuario"width="50" height="50"/>
             <h5>{state.user}</h5>
 
             
@@ -26,38 +79,55 @@ const Home = () => {
             </nav>
             </div>
             
-    
-            <div className='App-body-table'>
-            <table className="table">
-                <thead className="thead-dark">
+            <div className="table-title">
+            <div className="row ">
+                <div className="col mr-auto">
+                    <h4>TABELA DE <b>INFORMAÇÕES</b></h4>
+                </div>
+                {
+                    staff ? (
+                        <div className="col ml-auto ">
+                            <button type="button" className="btn btn-primary text-light"><i className="fa fa-plus"></i> Adicionar</button>
+                        </div>
+                    ) : (
+                        <>
+                        </>
+                    )
+                }
+            </div>
+            </div>
+            <div className='App-body-table table-responsive card'>
+                
+            { staff ? (
+                <table className="table table-bordered ">
+                <thead className="table-dark">
                     <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Perfil</th>
+                    <th scope="col">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
+                {renderAdminTable()}
                 </tbody>
             </table>
+            ) : (
+                <table className="table table-bordered ">
+                    <thead className="table-dark">
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Login</th>
+                        <th scope="col">Perfil</th>
+                
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {renderTable()}
+                    </tbody>
+                </table>
+            )}
+                
             </div>
         </div>
         );

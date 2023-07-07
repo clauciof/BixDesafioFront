@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { useLocation } from "react-router-dom"
 
-class Cadastro extends Component{
-
-    render(){
+const Cadastro = () => {
+    const location = useLocation()
+    const email = location.login
+    console.log(location)
         return (
             <div >
                 <div className="Menu">
@@ -32,7 +34,7 @@ class Cadastro extends Component{
                         </div>
                         <div className="form-check">
                             <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                            <label className="form-check-label" for="exampleCheck1">Check me out</label>
+                            <label className="form-check-label" >Check me out</label>
                         </div>
                         <button type="submit" className="btn btn-primary text-light">Submit</button>
                     </form>
@@ -40,7 +42,6 @@ class Cadastro extends Component{
                 
             </div>
           );
-    }
 
 }
 
