@@ -16,25 +16,25 @@ const INITIAL_DATA = [
   ]
   
 const Home = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const location = useLocation()
     console.log('Location', location.state)
     var user = location.state?.user || 'null'
-    var staff = location.state?.userStaff || null
+    var staff = location.state?.staff || false
 
-    const [state, setState] = useState({user: user, userStaff: staff, data: INITIAL_DATA})
+    const [state, setState] = useState({user: user, staff: staff, data: INITIAL_DATA})
 
     const icon = staff ? adminIcon : userIcon
 
     console.log('Estado fora', state)
 
     function handleEditClick(email){
-        navigate('/cadastro', {state: {email, userStaff: state.userStaff, user: state.user}})
+        navigate('/cadastro', {state: {email, staff: state.staff, user: state.user}})
 
     }
 
     function handleAddClick(){
-        navigate('/cadastro', {state: {email: null, userStaff: state.userStaff, user: state.user}})
+        navigate('/cadastro', {state: {email: null, staff: state.staff, user: state.user}})
     }
 
     function handleDeleteClick(email){
@@ -75,7 +75,7 @@ const Home = () => {
             <div className='Menu'>
             <nav>
                 <ul>
-                    <Link to='/'>Login</Link>
+                    <Link to='/'>Logout</Link>
                 </ul>
                 <ul>
                     <Link to='/cadastro'>Cadastro</Link>

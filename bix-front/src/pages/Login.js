@@ -2,16 +2,19 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+const baseURL = "http://localhost:8000/api/login/"
 
 const Login = () => {
+    const navigate = useNavigate()
    
     
         
-    const passwordExpression  = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/ 
+    //const passwordExpression  = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/ 
     // Set initial state
     const [state, setState]  = useState({login : null, password: null, validated: false, staff: false})
-    
-    
     
 
     function handleLoginChange(event){
@@ -24,17 +27,47 @@ const Login = () => {
         console.log(state.password)
     }
 
-    function handleSubmit(event){
+    async function handleSubmit(event){
         event.preventDefault()
         console.log(state)
-        if(state.login !==null && state.login.length !==0 && state.password !==null && passwordExpression.test(state.password)){
-            if(state.password === "admin1"){
-                console.log("AAA")
-                setState({login : state.login, password: state.password, validated: true, staff: true})
-                console.log(state.staff)
-            }else{
-                setState({login : state.login, password: state.password, validated: true, staff: false})
-            }
+        if(state.login !==null && state.login.length !==0 && state.password !==null ){ //&& passwordExpression.test(state.password
+            console.log(state.password)
+            const authResponse = await axios.post(baseURL, {
+                name: state.login,
+                password: state.password
+              })
+
+              console.log("a",authResponse)
+
+            navigate('/home', {state: authResponse.data})
+            // axios
+            //     .post(baseURL, {
+            //       name: state.login,
+            //       password: state.password
+            //     })
+            //     .then((response) => {
+            //       console.log(response)
+            //     });
+            
+            // if(state.password === "admin1"){
+            //     console.log("AAA")
+            //     //authenticate
+
+            //     axios
+            //     .post(baseURL, {
+            //       title: "Hello World!",
+            //       body: "This is a new post."
+            //     })
+            //     .then((response) => {
+            //       setPost(response.data);
+            //     });
+
+                
+            //     setState({login : state.login, password: state.password, validated: true, staff: true})
+            //     console.log(state.staff)
+            // }else{
+            //     setState({login : state.login, password: state.password, validated: true, staff: false})
+            // }
         }
         
     }

@@ -76,7 +76,7 @@ const Cadastro = () => {
                 <div className='Menu'>
                     <nav>
                         <ul>
-                            <Link to='/'>Login</Link>
+                            <Link to='/'>Logout</Link>
                         </ul>
                         <ul>
                             <Link to='/home'>Home</Link>
