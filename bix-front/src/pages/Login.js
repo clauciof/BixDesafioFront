@@ -9,65 +9,27 @@ const baseURL = "http://localhost:8000/api/login/"
 
 const Login = () => {
     const navigate = useNavigate()
-   
-    
-        
-    //const passwordExpression  = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/ 
-    // Set initial state
+
     const [state, setState]  = useState({login : null, password: null, validated: false, staff: false})
-    
 
     function handleLoginChange(event){
         setState({login : event.target.value, password: state.password, validated: state.validated, staff: state.staff})
-        console.log(state.login)
     }
 
     function handlePasswordChange(event){
         setState({login : state.login, password: event.target.value, validated: state.validated, staff: state.staff})
-        console.log(state.password)
     }
 
     async function handleSubmit(event){
         event.preventDefault()
-        console.log(state)
         if(state.login !==null && state.login.length !==0 && state.password !==null ){ //&& passwordExpression.test(state.password
-            console.log(state.password)
             const authResponse = await axios.post(baseURL, {
                 name: state.login,
                 password: state.password
               })
-
-              console.log("a",authResponse)
-
-            navigate('/home', {state: authResponse.data})
-            // axios
-            //     .post(baseURL, {
-            //       name: state.login,
-            //       password: state.password
-            //     })
-            //     .then((response) => {
-            //       console.log(response)
-            //     });
-            
-            // if(state.password === "admin1"){
-            //     console.log("AAA")
-            //     //authenticate
-
-            //     axios
-            //     .post(baseURL, {
-            //       title: "Hello World!",
-            //       body: "This is a new post."
-            //     })
-            //     .then((response) => {
-            //       setPost(response.data);
-            //     });
-
-                
-            //     setState({login : state.login, password: state.password, validated: true, staff: true})
-            //     console.log(state.staff)
-            // }else{
-            //     setState({login : state.login, password: state.password, validated: true, staff: false})
-            // }
+            if (authResponse.data.authenticated ) {
+                navigate('/home', {state: authResponse.data})
+            }
         }
         
     }
@@ -75,16 +37,7 @@ const Login = () => {
   
         return (
             <div >
-                <div className="Menu">
-                    <nav>
-                        <ul>
-                            <Link to="/home">Home</Link>
-                        </ul>
-                        <ul>
-                            <Link to="/cadastro">Cadastro</Link>
-                        </ul>
-                    </nav>
-                </div>
+                
                
                 <div className="App-body-login">
                     <h1>Login</h1>
