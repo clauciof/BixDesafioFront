@@ -53,7 +53,7 @@ const Home = () => {
     }
 
     function handleViewClick(email){
-        navigate('/timeline', {state: {email: null, staff: state.staff, user: state.user, authenticated}})
+        navigate('/timeline', {state: {email: email, staff: state.staff, user: state.user, authenticated}})
     }
 
     async function handleDeleteClick(email){
