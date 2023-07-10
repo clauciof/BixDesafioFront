@@ -1,13 +1,9 @@
 import React from 'react'
 import { useLocation, Link } from 'react-router-dom'
-import userIcon from '../icons/person.svg'
-import adminIcon from '../icons/manage_accounts.svg'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Navigate } from 'react-router-dom'
-import axios from 'axios'
-// import { useLocation } from 'react-router-dom'
 
+import axios from 'axios'
 
 const INITIAL_DATA = [
     {
@@ -58,7 +54,6 @@ const Home = () => {
         axios.get(`${USER_URL}?login=${email}`).then(response => {
         console.log("Response", response)
         setState({data: [{date: response.data.user_entry, title: "entrada"}, {date: response.data.user_out, title: "saida"}, {date: response.data.user_holidays, title: "ferias"}], authenticated})
-        //setState({user: response.data.user, staff: response.data.staff, authenticated: response.data.authenticated})
         });
       }, []);
 

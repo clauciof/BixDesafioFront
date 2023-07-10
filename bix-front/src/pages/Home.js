@@ -9,13 +9,9 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
-// import { useLocation } from 'react-router-dom'
-
 
 const INITIAL_DATA = [
-    // { name: 'Accenture', email: 'accenture@accenture.com', type: 'empresa' },
-    // { name: 'Claucio', email: 'claucio@gmail.com', type: 'funcionario' },
-    // { name: 'Bix', email: 'bix@bix.com', type: 'empresa' },
+    
   ]
 
 const USERS_URL = "http://localhost:8000/api/usuarios/"

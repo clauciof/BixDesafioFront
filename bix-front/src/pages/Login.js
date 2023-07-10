@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
@@ -22,7 +21,7 @@ const Login = () => {
 
     async function handleSubmit(event){
         event.preventDefault()
-        if(state.login !==null && state.login.length !==0 && state.password !==null ){ //&& passwordExpression.test(state.password
+        if(state.login !==null && state.login.length !==0 && state.password !==null ){ 
             const authResponse = await axios.post(baseURL, {
                 name: state.login,
                 password: state.password
